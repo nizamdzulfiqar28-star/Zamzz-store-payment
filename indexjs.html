@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zamzz Store - Produk Digital</title>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif;}
+    body {background:linear-gradient(135deg,#141e30,#243b55); color:#fff;}
+    header {text-align:center; padding:40px 20px;}
+    header h1 {font-size:2.5rem; margin-bottom:10px;}
+    header p {opacity:0.8;}
+    .container {max-width:900px; margin:auto; padding:20px;}
+    .card {
+      background:rgba(255,255,255,0.08);
+      border-radius:20px; padding:25px; margin:20px 0;
+      box-shadow:0 10px 25px rgba(0,0,0,0.4);
+      transition:.3s;
+    }
+    .card:hover {transform:translateY(-5px);}
+    h2 {margin-bottom:15px; border-bottom:2px solid rgba(255,255,255,0.2); display:inline-block;}
+    label {display:block; margin:10px 0 5px;}
+    select, input {
+      width:100%; padding:12px; border-radius:12px; border:none;
+      margin-bottom:15px; font-size:1rem;
+    }
+    .btn {
+      display:inline-block; padding:12px 20px; border-radius:30px;
+      font-weight:bold; text-decoration:none; color:#fff;
+      background:linear-gradient(45deg,#00c6ff,#0072ff);
+      box-shadow:0 5px 15px rgba(0,0,0,0.4);
+      transition:.3s; cursor:pointer;
+    }
+    .btn:hover {opacity:.85; transform:scale(1.05);}
+    .result {
+      margin-top:20px; padding:15px;
+      border-radius:15px; background:rgba(0,0,0,0.5);
+    }
+    .download {margin-top:15px;}
+    footer {text-align:center; padding:20px; opacity:0.7;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Zamzz Store</h1>
+    <p>Jual Beli Produk Digital Termurah & Terpercaya</p>
+  </header>
+
+  <div class="container">
+    <!-- Order -->
+    <div class="card">
+      <h2>Pilih Produk & Pembayaran</h2>
+      <form id="orderForm">
+        <label for="produk">Produk:</label>
+        <select id="produk" required>
+          <option value="E-Book Premium|20000">E-Book Premium - Rp20.000</option>
+          <option value="Akun Aplikasi 1 Bulan|35000">Akun Aplikasi 1 Bulan - Rp35.000</option>
+          <option value="Template Desain|15000">Template Desain - Rp15.000</option>
+        </select>
+
+        <label for="pembayaran">Metode Pembayaran:</label>
+        <select id="pembayaran" required>
+          <option value="Dana|083120296609">Dana (083120296609)</option>
+          <option value="Gopay|0895800166456">Gopay (0895800166456)</option>
+          <option value="Qris|minta ke admin">QRIS (minta ke admin)</option>
+        </select>
+
+        <button type="submit" class="btn">Beli Sekarang</button>
+      </form>
+
+      <div id="result" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- Password akses file -->
+    <div class="card">
+      <h2>Ambil File Produk</h2>
+      <p>Masukkan password yang diberikan admin setelah kirim bukti transfer via WhatsApp.</p>
+      <input type="password" id="passwordInput" placeholder="Masukkan password..." />
+      <button class="btn" onclick="checkPassword()">Submit</button>
+      <div id="downloadBox" class="download" style="display:none;">
+        <p>✅ Password benar! Klik link di bawah untuk download file:</p>
+        <a class="btn" href="https://drive.google.com/file/d/19sDKkrRQFiT3nAC726KHUZe8YGv3NBsS/view?usp=drivesdk" target="_blank">Download File</a>
+      </div>
+      <p id="errorMsg" style="color:#ff6b6b; margin-top:10px; display:none;">❌ Password salah, coba lagi.</p>
+    </div>
+
+    <!-- Kontak -->
+    <div class="card">
+      <h2>Kontak Admin</h2>
+      <a class="btn" href="https://wa.me/62895365185464" target="_blank">WhatsApp</a>
+      <a class="btn" href="https://t.me/zamzzstore" target="_blank">Telegram</a>
+    </div>
+  </div>
+
+  <footer>© 2025 Zamzz Store. All Rights Reserved.</footer>
+
+  <script>
+    // Order form
+    const form = document.getElementById('orderForm');
+    const resultBox = document.getElementById('result');
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const produkValue = document.getElementById('produk').value.split('|');
+      const produkName = produkValue[0];
+      const produkPrice = produkValue[1];
+      const payValue = document.getElementById('pembayaran').value.split('|');
+      const payMethod = payValue[0];
+      const payNumber = payValue[1];
+
+      // Kode unik
+      const uniqCode = Math.floor(Math.random()*900 + 100);
+      const totalBayar = parseInt(produkPrice) + uniqCode;
+
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = `
+        <h3>Detail Pesanan</h3>
+        <p><b>Produk:</b> ${produkName}</p>
+        <p><b>Harga:</b> Rp${produkPrice}</p>
+        <p><b>Kode Unik:</b> ${uniqCode}</p>
+        <p><b>Total Bayar:</b> Rp${totalBayar}</p>
+        <p><b>Metode:</b> ${payMethod}</p>
+        <p><b>No Tujuan:</b> ${payNumber}</p>
+        <br>
+        <a class="btn" href="https://wa.me/62895365185464?text=Halo%20Admin%2C%20saya%20ingin%20order%20${produkName}%20Total%20Bayar%20Rp${totalBayar}%20via%20${payMethod}%20.%20Bukti%20transfer%20akan%20saya%20kirim." target="_blank">Kirim Bukti Transfer via WhatsApp</a>
+      `;
+    });
+
+    // Password sistem
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      const correctPassword = "1234"; // password yang admin kasih manual
+      if (input === correctPassword) {
+        document.getElementById('downloadBox').style.display = 'block';
+        document.getElementById('errorMsg').style.display = 'none';
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('downloadBox').style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
